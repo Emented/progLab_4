@@ -23,10 +23,11 @@ public class Story {
         rabbit.tellAboutMustAction(rabbit.new visitHero(pig), puh);
         try {
             puh.feelNewVerse();
+            puh.tellAboutDecidedAction(puh.new waitForSmbd(pig));
         } catch (FeelingNewVerseException feelingNewVerseException) {
             System.out.println(feelingNewVerseException.getMessage());
+            puh.refuseOffer();
         }
-        puh.tellAboutDecidedAction(puh.new waitForSmbd(pig));
         rabbit.goOut(yard);
         pig.getUp(earlyTime);
         pig.decideToDoSmthg(pig.new CollectFlowersAction(field, 5));
