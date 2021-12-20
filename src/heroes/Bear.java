@@ -13,7 +13,7 @@ public class Bear extends AbstractAnimalHero {
 
     public void refuseOffer() {
         if (isOfferedToDoSmthg()) {
-            System.out.println("'" + getName() + "' отказался от предлодлодения");
+            System.out.println("'" + getName() + "' отказался от предложения");
             setOfferedToDoSmthg(false);
         } else {
             System.out.println("герою '" + getName() + "' ничего не предлагали");
