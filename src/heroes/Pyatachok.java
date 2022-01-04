@@ -17,13 +17,10 @@ public class Pyatachok extends AbstractAnimalHero implements InterfaceOfThinking
     }
 
     public void getUp(InterfaceOfTime time) {
-        if (time == null) {
-            throw new NullPointerException("time can't be null");
-        } else {
-            isSleeping = false;
-            setFeeling(Feelings.HAPPYNESS);
-            System.out.println("'" + getName() + "' встал '" + time.getTime() + "'");
-        }
+        if (time == null) throw new NullPointerException("time can't be null");
+        isSleeping = false;
+        setFeeling(Feelings.HAPPYNESS);
+        System.out.println("'" + getName() + "' встал '" + time.getTime() + "'");
     }
 
     public void setHasAnAimToDoSmthg(boolean hasAnAimToDoSmthg) {
@@ -31,16 +28,13 @@ public class Pyatachok extends AbstractAnimalHero implements InterfaceOfThinking
     }
 
     public void decideToDoSmthg(InterfaceOfPigsAction action) {
-        if (action == null) {
-            throw new NullPointerException("action can't be null");
+        if (action == null) throw new NullPointerException("action can't be null");
+        if (!isSleeping) {
+            hasAnAimToDoSmthg = true;
+            action.tellAboutDecision(Pyatachok.this);
+            link = action;
         } else {
-            if (!isSleeping) {
-                hasAnAimToDoSmthg = true;
-                action.tellAboutDecision(Pyatachok.this);
-                link = action;
-            } else {
-                System.out.println("'" + getName() + "' спит");
-            }
+            System.out.println("'" + getName() + "' спит");
         }
     }
 
@@ -56,84 +50,69 @@ public class Pyatachok extends AbstractAnimalHero implements InterfaceOfThinking
     }
 
     public void moveTo(Place fPoint) {
-        if (fPoint == null) {
-            throw new NullPointerException("fPoint can't be null");
-        } else {
-            if (!isSleeping) {
-                if (fPoint.getPlace().isPossibileToGetInside()) {
-                    System.out.println("'" + getName() + "' побежал в место '" + fPoint.getPlace().getName() + "'");
-                    setPlace(fPoint.getPlace());
-                } else {
-                    System.out.println("сюда нельзя войти");
-                }
+        if (fPoint == null) throw new NullPointerException("fPoint can't be null");
+        if (!isSleeping) {
+            if (fPoint.getPlace().isPossibileToGetInside()) {
+                System.out.println("'" + getName() + "' побежал в место '" + fPoint.getPlace().getName() + "'");
+                setPlace(fPoint.getPlace());
             } else {
-                System.out.println("'" + getName() + "' спит");
+                System.out.println("сюда нельзя войти");
             }
+        } else {
+            System.out.println("'" + getName() + "' спит");
         }
     }
 
     public void moveTo(Places fPoint) {
-        if (fPoint == null) {
-            throw new NullPointerException("fPoint can't be null");
-        } else {
-            if (!isSleeping) {
-                if (fPoint.isPossibileToGetInside()) {
-                    System.out.println("'" + getName() + "' побежал в место '" + fPoint.getName() + "'");
-                    setPlace(fPoint);
-                } else {
-                    System.out.println("сюда нельзя войти");
-                }
+        if (fPoint == null) throw new NullPointerException("fPoint can't be null");
+        if (!isSleeping) {
+            if (fPoint.isPossibileToGetInside()) {
+                System.out.println("'" + getName() + "' побежал в место '" + fPoint.getName() + "'");
+                setPlace(fPoint);
             } else {
-                System.out.println("'" + getName() + "' спит");
+                System.out.println("сюда нельзя войти");
             }
+        } else {
+            System.out.println("'" + getName() + "' спит");
         }
     }
 
     @Override
     public void thinkAbout(AbstractAnimalHero crewmember) {
-        if (crewmember == null) {
-            throw new NullPointerException("Another hero can't be null");
+        if (crewmember == null) throw new NullPointerException("Another hero can't be null");
+        if (!isSleeping) {
+            int amountOfFlowers = crewmember.getAmountOfFlowers();
+            System.out.println("'" + getName() + "' подумал об '" + crewmember.getName() + "' и понял, что у него " + ((amountOfFlowers == 0) ? "не было" : amountOfFlowers) + " цветов");
+            crewmember.checkFlowers();
+            setFeeling(Feelings.COMPASSION);
+            System.out.println("'" + getName() + "' испытывал '" + getFeeling().getNameOfFeeling() + "'");
         } else {
-            if (!isSleeping) {
-                int amountOfFlowers = crewmember.getAmountOfFlowers();
-                System.out.println("'" + getName() + "' подумал об '" + crewmember.getName() + "' и понял, что у него " + ((amountOfFlowers == 0) ? "не было" : amountOfFlowers) + " цветов");
-                crewmember.checkFlowers();
-                setFeeling(Feelings.COMPASSION);
-                System.out.println("'" + getName() + "' испытывал '" + getFeeling().getNameOfFeeling() + "'");
-            } else {
-                System.out.println("'" + getName() + "' спит");
-            }
+            System.out.println("'" + getName() + "' спит");
         }
     }
 
     @Override
     public void thinkMore(AbstractAnimalHero crewmember) {
-        if (crewmember == null) {
-            throw new NullPointerException("Another hero can't be null");
+        if (crewmember == null) throw new NullPointerException("Another hero can't be null");
+        if (!isSleeping) {
+            setFeeling(Feelings.BIGGERCOMPASSION);
+            System.out.println("И чем больше '" + getName() + "' думал об '" + crewmember.getName() + "', тем '" + getFeeling().getNameOfFeeling() + "' он испытывал");
         } else {
-            if (!isSleeping) {
-                setFeeling(Feelings.BIGGERCOMPASSION);
-                System.out.println("И чем больше '" + getName() + "' думал об '" + crewmember.getName() + "', тем '" + getFeeling().getNameOfFeeling() + "' он испытывал");
-            } else {
-                System.out.println("'" + getName() + "' спит");
-            }
+            System.out.println("'" + getName() + "' спит");
         }
     }
 
     public void repeat(PhraseOfHero phrase) {
-        if (phrase == null) {
-            throw new NullPointerException("phrase can't be null");
+        if (phrase == null) throw new NullPointerException("phrase can't be null");
+        if (!isSleeping && hasAnAimToDoSmthg) {
+            String currentPhrase = phrase.getPhrase();
+            degreeOfMem++;
+            System.out.println("'" + getName() + "' повторял '" + currentPhrase + "'");
+            System.out.println("Уровень его запоминания увеличился на 1, теперь он составляет " + degreeOfMem);
+        } else if (isSleeping) {
+            System.out.println("'" + getName() + "' спит");
         } else {
-            if (!isSleeping && hasAnAimToDoSmthg) {
-                String currentPhrase = phrase.getPhrase();
-                degreeOfMem++;
-                System.out.println("'" + getName() + "' повторял '" + currentPhrase + "'");
-                System.out.println("Уровень его запоминания увеличился на 1, теперь он составляет " + degreeOfMem);
-            } else if (isSleeping) {
-                System.out.println("'" + getName() + "' спит");
-            } else {
-                System.out.println("у '" + getName() + "' нет цели, ему нечего запоминать");
-            }
+            System.out.println("у '" + getName() + "' нет цели, ему нечего запоминать");
         }
     }
 
@@ -158,6 +137,7 @@ public class Pyatachok extends AbstractAnimalHero implements InterfaceOfThinking
         private final String phrase;
 
         PhraseOfHero(String phrase) {
+            if (phrase.equals("")) throw new IllegalArgumentException("Phrase must be at least 1 symbol");
             this.phrase = phrase;
         }
 

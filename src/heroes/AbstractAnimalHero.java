@@ -15,6 +15,7 @@ public abstract class AbstractAnimalHero extends AbstractFlowersKeeper {
         if (name.equals("")) throw new IllegalArgumentException("Name must be at least 1 symbol");
         if (place == null) throw new NullPointerException("place can't be null");
         if (feeling == null) throw new NullPointerException("feeling can't be null");
+        if (amountOfFlowers < 0) throw new IllegalArgumentException("amountOfFlowers must be at least 0");
         setAmountOfFlowers(amountOfFlowers);
         this.name = name;
         this.place = place;
@@ -27,11 +28,8 @@ public abstract class AbstractAnimalHero extends AbstractFlowersKeeper {
     }
 
     public void setFeeling(Feelings feeling) {
-        if (feeling == null) {
-            throw new NullPointerException("Another hero can't be null");
-        } else {
-            this.feeling = feeling;
-        }
+        if (feeling == null) throw new NullPointerException("Another hero can't be null");
+        this.feeling = feeling;
     }
 
     public boolean isOfferedToDoSmthg() {
@@ -47,11 +45,8 @@ public abstract class AbstractAnimalHero extends AbstractFlowersKeeper {
     }
 
     public void setPlace(Places place) {
-        if (place == null) {
-            throw new NullPointerException("Another hero can't be null");
-        } else {
-            this.place = place;
-        }
+        if (place == null) throw new NullPointerException("place can't be null");
+        this.place = place;
     }
 
     public String getName() {
@@ -59,40 +54,34 @@ public abstract class AbstractAnimalHero extends AbstractFlowersKeeper {
     }
 
     public void takeFlowersFrom(AbstractFlowersKeeper giver, int amount) {
-        if (amount == 0) throw new IllegalArgumentException("amount of flowers must be more then 0");
-        if (giver == null) {
-            throw new NullPointerException("giver can't be null");
+        if (amount <= 0) throw new IllegalArgumentException("amount of flowers must be more then 0");
+        if (giver == null) throw new NullPointerException("giver can't be null");
+        if (giver.getAmountOfFlowers() - amount >= 0) {
+            giver.setAmountOfFlowers(giver.getAmountOfFlowers() - amount);
+            setAmountOfFlowers(getAmountOfFlowers() + amount);
         } else {
-            if (giver.getAmountOfFlowers() - amount >= 0) {
-                giver.setAmountOfFlowers(giver.getAmountOfFlowers() - amount);
-                setAmountOfFlowers(getAmountOfFlowers() + amount);
-            } else {
-                System.out.println("недосточное количество цветов");
-            }
-            if (giver instanceof AbstractAnimalHero) {
-                System.out.println("'" + getName() + "' взял у '" + ((AbstractAnimalHero) giver).getName() + "' " + amount + " цветов");
-            } else {
-                System.out.println("'" + getName() + "' сорвал в месте '" + ((Place) giver).getPlace().getName() + "' " + amount + " цветов");
-            }
+            System.out.println("недосточное количество цветов");
+        }
+        if (giver instanceof AbstractAnimalHero) {
+            System.out.println("'" + getName() + "' взял у '" + ((AbstractAnimalHero) giver).getName() + "' " + amount + " цветов");
+        } else {
+            System.out.println("'" + getName() + "' сорвал в месте '" + ((Place) giver).getPlace().getName() + "' " + amount + " цветов");
         }
     }
 
     public void moveFlowersTo(AbstractFlowersKeeper accepter, int amount) {
-        if (amount == 0) throw new IllegalArgumentException("amount of flowers must be more then 0");
-        if (accepter == null) {
-            throw new NullPointerException("accepter can't be null");
+        if (amount <= 0) throw new IllegalArgumentException("amount of flowers must be more then 0");
+        if (accepter == null) throw new NullPointerException("accepter can't be null");
+        if (getAmountOfFlowers() - amount >= 0) {
+            setAmountOfFlowers(getAmountOfFlowers() - amount);
+            accepter.setAmountOfFlowers(accepter.getAmountOfFlowers() + amount);
         } else {
-            if (getAmountOfFlowers() - amount >= 0) {
-                setAmountOfFlowers(getAmountOfFlowers() - amount);
-                accepter.setAmountOfFlowers(accepter.getAmountOfFlowers() + amount);
-            } else {
-                System.out.println("недостаточное количество цветов");
-            }
-            if (accepter instanceof AbstractAnimalHero) {
-                System.out.println("'" + getName() + "' отдал герою '" + ((AbstractAnimalHero) accepter).getName() + "' " + amount + " цветов");
-            } else {
-                System.out.println("'" + getName() + "' положил в место '" + ((Place) accepter).getPlace().getName() + "' " + amount + " цветов");
-            }
+            System.out.println("недостаточное количество цветов");
+        }
+        if (accepter instanceof AbstractAnimalHero) {
+            System.out.println("'" + getName() + "' отдал герою '" + ((AbstractAnimalHero) accepter).getName() + "' " + amount + " цветов");
+        } else {
+            System.out.println("'" + getName() + "' положил в место '" + ((Place) accepter).getPlace().getName() + "' " + amount + " цветов");
         }
     }
 

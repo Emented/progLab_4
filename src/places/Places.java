@@ -12,6 +12,7 @@ public enum Places {
     private final String name;
 
     Places(String name, boolean possibileToGetInside) {
+        if (name.equals("")) throw new IllegalArgumentException("Name must be at least 1 symbol");
         this.name = name;
         this.possibleToGetInside = possibileToGetInside;
     }

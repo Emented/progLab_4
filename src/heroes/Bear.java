@@ -21,11 +21,8 @@ public class Bear extends AbstractAnimalHero {
     }
 
     public void tellAboutDecidedAction(InterfaceOfBearsAction action) {
-        if (action == null) {
-            throw new NullPointerException("action can't be null");
-        } else {
-            System.out.println("'" + getName() + "' сказал, что он собирается " + action.getName());
-        }
+        if (action == null) throw new NullPointerException("action can't be null");
+        System.out.println("'" + getName() + "' сказал, что он собирается " + action.getName());
     }
 
     public void feelNewVerse() throws FeelingNewVerseException {
@@ -36,10 +33,12 @@ public class Bear extends AbstractAnimalHero {
                 private final String name;
 
                 public Shumelka(String name) {
+                    if (name.equals("")) throw new IllegalArgumentException("Name must be at least 1 symbol");
                     this.name = name;
                 }
 
                 private void comeToMind(AbstractAnimalHero hero) {
+                    if (hero == null) throw new NullPointerException("hero can't be null");
                     System.out.println("'" + name + "' пришел в голову герою '" + hero.getName() + "', и он почувствовал это");
                     refuseOffer();
                 }
@@ -65,11 +64,8 @@ public class Bear extends AbstractAnimalHero {
 
         @Override
         public void tellAboutAction(Bear teller) {
-            if (teller == null) {
-                throw new NullPointerException("Teller can't be null");
-            } else {
-                System.out.println("'" + teller.getName() + "' решил подождать героя '" + hero.getName() + "'");
-            }
+            if (teller == null) throw new NullPointerException("Teller can't be null");
+            System.out.println("'" + teller.getName() + "' решил подождать героя '" + hero.getName() + "'");
         }
 
         @Override

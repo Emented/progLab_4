@@ -9,6 +9,7 @@ public class Place extends AbstractFlowersKeeper {
 
     public Place(int amountOfFlowers, Places place) {
         if (place == null) throw new NullPointerException("place can't be null");
+        if (amountOfFlowers < 0) throw new IllegalArgumentException("amountOfFlowers must be at least 0");
         setAmountOfFlowers(amountOfFlowers);
         this.place = place;
     }

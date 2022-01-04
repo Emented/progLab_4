@@ -11,9 +11,7 @@ public class Rabbit extends AbstractAnimalHero {
     }
 
     public void goOut(Place toPlace) {
-        if (toPlace == null) {
-            throw new NullPointerException("Place hero can't be null");
-        }
+        if (toPlace == null) throw new NullPointerException("Place hero can't be null");
         if (toPlace.getPlace().isPossibileToGetInside()) {
             System.out.println("'" + getName() + "' ушел из места '" + getPlace().getName() + "' в место: '" + toPlace.getPlace().getName() + "'");
             setPlace(toPlace.getPlace());
@@ -24,50 +22,38 @@ public class Rabbit extends AbstractAnimalHero {
     }
 
     public void meetAnotherHero(AbstractAnimalHero anotherHero) {
-        if (anotherHero == null) {
-            throw new NullPointerException("Another hero can't be null");
+        if (anotherHero == null) throw new NullPointerException("Another hero can't be null");
+        if (getPlace().equals(anotherHero.getPlace())) {
+            System.out.println("'" + getName() + "' втретил '" + anotherHero.getName() + "' в месте '" + getPlace().getName() + "'");
         } else {
-            if (getPlace().equals(anotherHero.getPlace())) {
-                System.out.println("'" + getName() + "' втретил '" + anotherHero.getName() + "' в месте '" + getPlace().getName() + "'");
-            } else {
-                setPlace(anotherHero.getPlace());
-                System.out.println("'" + getName() + "' втретил '" + anotherHero.getName() + "' в месте '" + getPlace().getName() + "'");
-            }
+            setPlace(anotherHero.getPlace());
+            System.out.println("'" + getName() + "' втретил '" + anotherHero.getName() + "' в месте '" + getPlace().getName() + "'");
         }
     }
 
     public void greetSmbd(AbstractAnimalHero hero, String whatFor) {
         if (hero == null) throw new NullPointerException("hero can't be null");
-        if (whatFor.equals("")) {
-            throw new IllegalArgumentException("reason must be at least 1 symbol");
-        } else {
-            hero.setFeeling(Feelings.HAPPYNESS);
-            System.out.println("'" + getName() + "' поблагодарил героя '" + hero.getName() + "' " + whatFor);
-        }
+        if (whatFor.equals("")) throw new IllegalArgumentException("reason must be at least 1 symbol");
+        hero.setFeeling(Feelings.HAPPYNESS);
+        System.out.println("'" + getName() + "' поблагодарил героя '" + hero.getName() + "' " + whatFor);
     }
 
     public void offerSmbd(AbstractAnimalHero anotherHero, String offer) {
         if (anotherHero == null) throw new NullPointerException("Another hero can't be null");
-        if (offer.equals("")) {
-            throw new IllegalArgumentException("offer must be at least 1 symbol");
+        if (offer.equals("")) throw new IllegalArgumentException("offer must be at least 1 symbol");
+        if (!anotherHero.isOfferedToDoSmthg()) {
+            anotherHero.setOfferedToDoSmthg(true);
+            System.out.println("'" + getName() + "' предложил герою '" + anotherHero.getName() + "' " + offer);
         } else {
-            if (!anotherHero.isOfferedToDoSmthg()) {
-                anotherHero.setOfferedToDoSmthg(true);
-                System.out.println("'" + getName() + "' предложил герою '" + anotherHero.getName() + "' " + offer);
-            } else {
-                System.out.println("этому герою уже что-то предложили");
-            }
+            System.out.println("этому герою уже что-то предложили");
         }
     }
 
     public void tellAboutMustAction(InterfaceOfRabbitsAction action, AbstractAnimalHero listener) {
-        if (action == null) {
-            throw new NullPointerException("action can't be null");
-        } else {
-            action.tellAboutAction(Rabbit.this);
-            if (listener != null) {
-                offerSmbd(listener, action.getName());
-            }
+        if (action == null) throw new NullPointerException("action can't be null");
+        action.tellAboutAction(Rabbit.this);
+        if (listener != null) {
+            offerSmbd(listener, action.getName());
         }
     }
 
@@ -87,24 +73,19 @@ public class Rabbit extends AbstractAnimalHero {
         }
 
         public void tellAboutAction(Rabbit teller) {
-            if (teller == null) {
-                throw new NullPointerException("teller hero can't be null");
-            } else {
-                System.out.println("'" + teller.getName() + "' должен навестить героя '" + hero.getName() + "'");
-            }
+            if (teller == null) throw new NullPointerException("teller hero can't be null");
+            System.out.println("'" + teller.getName() + "' должен навестить героя '" + hero.getName() + "'");
         }
 
         public void performAction(Rabbit teller) {
-            if (teller == null) {
-                throw new NullPointerException("teller hero can't be null");
-            } else {
-                if (getPlace().equals(hero.getPlace())) {
-                    System.out.println("'" + teller.getName() + "' навестил '" + hero.getName() + "' в месте '" + getPlace().getName() + "'");
-                } else {
-                    setPlace(hero.getPlace());
-                }
+            if (teller == null) throw new NullPointerException("teller hero can't be null");
+            if (getPlace().equals(hero.getPlace())) {
                 System.out.println("'" + teller.getName() + "' навестил '" + hero.getName() + "' в месте '" + getPlace().getName() + "'");
+            } else {
+                setPlace(hero.getPlace());
             }
+            System.out.println("'" + teller.getName() + "' навестил '" + hero.getName() + "' в месте '" + getPlace().getName() + "'");
+
         }
 
         @Override
